@@ -18,7 +18,41 @@ npm run preview
 
 ---
 
-## ☁️ Deploying to Cloudflare Pages
+## 🚀 Deploying to Hostinger
+
+This project includes a server-side payment-proof endpoint that sends uploaded
+screenshots by email. It therefore requires a Hostinger plan with **Node.js
+application hosting**. A static-only hosting plan cannot run
+`/api/submit-payment`.
+
+1. In Hostinger hPanel, create a Node.js application for `templatedepot.shop`.
+2. Use Node.js 20, the production environment, and the repository as the source.
+3. Set the application start file to `dist/server/entry.mjs`.
+4. Set the build command to `npm run build` and the start command to
+   `node dist/server/entry.mjs`.
+5. Add the variables from `.env.example` in hPanel's environment-variable
+   settings. Do not upload `.env` or commit SMTP credentials.
+6. Point the domain's DNS to the Node.js application as instructed by
+   Hostinger, then enable HTTPS.
+7. After deployment, test both the home page and a payment-proof submission
+   with a real image attachment.
+
+The production build outputs a standalone Node server in `dist/server`:
+
+```bash
+npm install
+npm run build
+node dist/server/entry.mjs
+```
+
+### Alternative: static-only Hostinger hosting
+
+Static hosting can serve the catalog pages, but it cannot process payment
+proofs or send email. To use a static-only plan, the payment-proof workflow
+must be moved to an external form/email service before deployment; do not
+deploy the current API-less version expecting `/api/submit-payment` to work.
+
+## ☁️ Deploying to Cloudflare Pages (legacy option)
 
 ### Option 1: Via Cloudflare Dashboard (Recommended)
 
@@ -30,7 +64,7 @@ npm run preview
    - **Framework preset:** Astro
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
-   - **Node.js version:** 20 (set in environment variables: `NODE_VERSION = 20`)
+   - **Node.js version:** 20
 6. Click **Save and Deploy**.
 
 ### Option 2: Via Wrangler CLI
@@ -68,8 +102,15 @@ Before going live, update the following placeholders:
 - [ ] Update Messenger URL (`https://m.me/61590735058749`)
 
 ### SEO & Meta
-- [ ] Update `site` in `astro.config.mjs` with your real domain
+- [x] Set `site` in `astro.config.mjs` to `https://templatedepot.shop`
 - [ ] Add a real `og-image.png` (1200×630px) to the `/public` folder
+
+### Hosting & email
+- [ ] Confirm the Hostinger plan supports Node.js applications
+- [ ] Configure all five SMTP variables from `.env.example` in Hostinger
+- [ ] Verify the SMTP provider permits the selected host/port and sender
+- [ ] Submit a real test payment proof and confirm the attachment arrives
+- [ ] Configure backups, domain HTTPS, and an error/log monitoring process
 
 ### Content
 - [ ] Review all template descriptions and pricing
