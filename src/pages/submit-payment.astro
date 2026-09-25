@@ -510,34 +510,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     document.getElementById(id)?.addEventListener('input', () => clearError(id));
   });
 
-  /* ── Builds a mailto: fallback identical in spirit to the old
-       behaviour — used ONLY if the real send (below) fails, so the
-       customer is never stuck with a dead submit button. Note: a
-       mailto: link cannot carry the screenshot as a real attachment,
-       so the fallback message asks the customer to attach it manually
-       in the email draft that opens. ── */
-  function buildMailtoFallback(data: {
-    fullName: string; email: string; templateName: string;
-    paymentMethod: string; amount: string; message: string;
-  }): string {
-    const subject = encodeURIComponent(`[Template Depot Order] ${data.templateName} — ${data.fullName}`);
-    const body = encodeURIComponent(
-      `Full Name: ${data.fullName}\n` +
-      `Email: ${data.email}\n` +
-      `Template(s) Ordered: ${data.templateName}\n` +
-      `Payment Method: ${data.paymentMethod}\n` +
-      `Amount Paid: \u20B1${data.amount}\n` +
-      `\nMessage:\n${data.message || 'None'}\n` +
-      `\n---\nPlease attach your payment screenshot to this email before sending.`
-    );
-    return `mailto:info@nightospheremedia.com?subject=${subject}&body=${body}`;
-  }
-
-  /* ── Form submit — now actually SENDS via /api/submit-payment
-       (Nodemailer + SMTP, with the screenshot as a real attachment).
-       Falls back to opening a mailto: draft only if that request
-       fails for any reason (server not configured yet, no internet,
-       etc.), so the customer always has a way through. ── */
+  /* ── Form submit — sends through the server-side SMTP endpoint. ── */
   form.addEventListener('submit', async e => {
     e.preventDefault();
 
@@ -593,21 +566,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       successState.classList.remove('hidden');
 
     } catch (err) {
-      // Real send failed — fall back to the customer's own email app
-      // so they're never stuck, exactly as the site behaved before.
-      console.error('submit-payment failed, falling back to mailto:', err);
+      console.error('submit-payment failed:', err);
 
       submitBtn.disabled = false;
       submitBtnLabel.textContent = originalLabel;
-      submitErrorBanner.textContent = 'Couldn\u2019t send automatically — opening your email app instead. Please attach your screenshot there.';
+      submitErrorBanner.textContent = 'Couldn\u2019t send your payment proof. Please check your details and try again.';
       submitErrorBanner.classList.remove('hidden');
-
-      window.location.href = buildMailtoFallback({ fullName, email, templateName, paymentMethod: method, amount, message });
-
-      setTimeout(() => {
-        form.classList.add('hidden');
-        successState.classList.remove('hidden');
-      }, 1200);
     }
   });
 </script>
