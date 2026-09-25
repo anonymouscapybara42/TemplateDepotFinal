@@ -26,7 +26,7 @@ application hosting**. A static-only hosting plan cannot run
 `/api/submit-payment`.
 
 1. In Hostinger hPanel, create a Node.js application for `templatedepot.shop`.
-2. Use Node.js 20, the production environment, and the repository as the source.
+2. Use Node.js 24, the production environment, and the repository as the source.
 3. Set the application start file to `dist/server/entry.mjs`.
 4. Set the build command to `npm run build` and the start command to
    `node dist/server/entry.mjs`.
@@ -64,7 +64,7 @@ deploy the current API-less version expecting `/api/submit-payment` to work.
    - **Framework preset:** Astro
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
-   - **Node.js version:** 20
+   - **Node.js version:** 24
 6. Click **Save and Deploy**.
 
 ### Option 2: Via Wrangler CLI
