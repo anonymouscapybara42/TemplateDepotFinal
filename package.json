@@ -10,7 +10,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "^11.1.4",
+    "@astrojs/node": "^11.1.6",
     "autoprefixer": "^10.4.21",
     "astro": "^7.2.4",
     "nodemailer": "^9.0.6",
