@@ -19,6 +19,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
+import 'dotenv/config';
 import nodemailer from 'nodemailer';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB, matches the form's stated limit
@@ -60,11 +61,11 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ success: false, error: 'Screenshot must be a PNG, JPG, or WEBP image.' }, 400);
     }
 
-    const SMTP_HOST = import.meta.env.SMTP_HOST || 'smtp.gmail.com';
-    const SMTP_PORT = Number(import.meta.env.SMTP_PORT) || 465;
-    const SMTP_USER = import.meta.env.SMTP_USER;
-    const SMTP_PASS = import.meta.env.SMTP_PASS;
-    const INQUIRY_TO_EMAIL = import.meta.env.INQUIRY_TO_EMAIL || SMTP_USER;
+    const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
+    const SMTP_PORT = Number(process.env.SMTP_PORT) || 465;
+    const SMTP_USER = process.env.SMTP_USER;
+    const SMTP_PASS = process.env.SMTP_PASS;
+    const INQUIRY_TO_EMAIL = process.env.INQUIRY_TO_EMAIL || SMTP_USER;
 
     if (!SMTP_USER || !SMTP_PASS) {
       console.error('submit-payment: SMTP_USER / SMTP_PASS are not set.');
