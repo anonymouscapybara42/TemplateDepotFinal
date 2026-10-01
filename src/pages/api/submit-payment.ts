@@ -19,8 +19,10 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import 'dotenv/config';
+import { config } from 'dotenv';
 import nodemailer from 'nodemailer';
+
+config();
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB, matches the form's stated limit
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
