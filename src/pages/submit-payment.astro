@@ -570,7 +570,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       submitBtn.disabled = false;
       submitBtnLabel.textContent = originalLabel;
-      submitErrorBanner.textContent = 'Couldn\u2019t send your payment proof. Please check your details and try again.';
+      submitErrorBanner.textContent = err instanceof Error && !(err instanceof TypeError) && err.message !== 'Request failed'
+        ? err.message
+        : 'Couldn\u2019t send your payment proof. Please check your details and try again.';
       submitErrorBanner.classList.remove('hidden');
     }
   });
