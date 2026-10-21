@@ -18,36 +18,32 @@ npm run preview
 
 ---
 
-## ☁️ Deploying to Cloudflare Pages
+## Deploying to Hostinger Node.js
 
-### Option 1: Via Cloudflare Dashboard (Recommended)
+The payment submission endpoint sends email from the server, so this project
+must run as a Node.js app rather than being uploaded as static files.
 
-1. Push your project to a GitHub repository.
-2. Log in to [Cloudflare Dashboard](https://dash.cloudflare.com).
-3. Go to **Workers & Pages** → **Create Application** → **Pages**.
-4. Click **Connect to Git** and select your repository.
-5. Configure the build settings:
-   - **Framework preset:** Astro
-   - **Build command:** `npm run build`
-   - **Build output directory:** `dist`
-   - **Node.js version:** 20 (set in environment variables: `NODE_VERSION = 20`)
-6. Click **Save and Deploy**.
+1. Create or select the Node.js web app in Hostinger hPanel and connect/upload
+   this project.
+2. Use a Node.js version supported by the app (Node 20 or later).
+3. Install dependencies and build the app:
 
-### Option 2: Via Wrangler CLI
+   ```bash
+   npm install
+   npm run build
+   ```
 
-```bash
-# Install Wrangler globally
-npm install -g wrangler
+4. Set the app's startup command to `npm start`. This runs
+   `node ./dist/server/entry.mjs`.
+5. Add these environment variables in the Hostinger app settings:
+   - `SMTP_USER` and `SMTP_PASS` (required)
+   - `SMTP_HOST` (optional; defaults to `smtp.gmail.com`)
+   - `SMTP_PORT` (optional; defaults to `465`)
+   - `INQUIRY_TO_EMAIL` (optional; defaults to `SMTP_USER`)
+6. Restart/redeploy the app after saving the environment variables.
 
-# Login to Cloudflare
-wrangler login
-
-# Build the project
-npm run build
-
-# Deploy to Cloudflare Pages
-wrangler pages deploy dist --project-name=template-depot
-```
+Do not deploy only the `dist/client` directory or upload this project as a
+static site; that would omit the server endpoint used to submit payment proof.
 
 ---
 
