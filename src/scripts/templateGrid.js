@@ -1,8 +1,7 @@
 // src/scripts/templateGrid.js
-import templates, { MESSENGER_URL, CONTACT_EMAIL, computeDiscountPercent } from '../data/templates.js';
+import templates, { MESSENGER_URL, computeDiscountPercent } from '../data/templates.js';
 
 const MSGR = MESSENGER_URL;
-const EMAIL = CONTACT_EMAIL;
 
 /* ── DOM refs ── */
 const modal      = document.getElementById('product-modal');
@@ -212,17 +211,6 @@ function populateModal(t) {
     msgrBtn.setAttribute('aria-label', `Ask about ${t.title} on Messenger`);
   }
 
-  const emailBtn = document.getElementById('modal-email-btn');
-  if (emailBtn) {
-    const subject = encodeURIComponent(`[Template Depot] Interested in: ${t.title} (${t.price})`);
-    const body    = encodeURIComponent(
-      `Hi Template Depot!\n\nI'm interested in purchasing:\n\n` +
-      `Template: ${t.title}\nPrice:    ${t.price}\n\n` +
-      `Please send me the payment details.\n\nThank you!`
-    );
-    emailBtn.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
-    emailBtn.setAttribute('aria-label', `Send email about ${t.title}`);
-  }
 }
 
 /* ── Open / close modal ── */
