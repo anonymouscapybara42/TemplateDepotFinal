@@ -40,10 +40,14 @@ must run as a Node.js app rather than being uploaded as static files.
    - `SMTP_HOST` (optional; defaults to `smtp.gmail.com`)
    - `SMTP_PORT` (optional; defaults to `465`)
    - `INQUIRY_TO_EMAIL` (optional; defaults to `SMTP_USER`)
+   - `SITE_ORIGIN` (optional; defaults to `https://templatedepot.shop`)
 6. Restart/redeploy the app after saving the environment variables.
 
 Do not deploy only the `dist/client` directory or upload this project as a
 static site; that would omit the server endpoint used to submit payment proof.
+The app validates state-changing request origins against `SITE_ORIGIN`, which
+allows the public HTTPS origin to be checked when Hostinger terminates TLS
+before the Node.js app.
 
 ---
 

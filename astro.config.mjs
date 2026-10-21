@@ -5,5 +5,8 @@ import node from '@astrojs/node';
 export default defineConfig({
   adapter: node({ mode: 'standalone' }),
   output: 'server',
+  security: {
+    checkOrigin: false,
+  },
   site: 'https://templatedepot.pages.dev',
 });
